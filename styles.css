@@ -1,0 +1,148 @@
+body {
+    font-family: 'Times New Roman', Times, serif;
+    background-color: #000000;
+    margin: 0;
+    padding: 20px;
+  }
+h1 {
+    color: #098911;
+    text-align: center; 
+}
+
+p {
+    color: white
+}
+  
+h2 {
+    color: white; 
+}
+  
+div {
+    color: #098911; 
+}
+.button-52:hover {
+    color: #fff
+}
+.button-51:hover {
+    color: #fff
+}
+.slanted {
+    font-style: italic;
+}
+
+.lab-text {
+    color: white
+}
+
+.button-52 {
+  width: 200px;
+  height: 50px;
+  font-weight: 200;
+  font-size: 9px;
+  letter-spacing: 1px;
+  padding: 13px 20px 13px;
+  outline: 0;
+  border: 1px solid black;
+  cursor: pointer;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-52:after {
+  content: "";
+  background-color: #098911;
+  width: 100%;
+  z-index: -1;
+  position: absolute;
+  height: 100%;
+  top: 7px;
+  left: 7px;
+  transition: 0.2s;
+}
+
+.button-52:hover:after {
+  top: 0px;
+  left: 0px;
+  color: #fff
+}
+
+@media (min-width: 768px) {
+  .button-52 {
+    padding: 13px 50px 13px;
+  }
+}
+
+.button-62 {
+  background: linear-gradient(to bottom right, #EF4765, #FF9A5A);
+  text-align: center;
+  border: 0;
+  border-radius: 12px;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: -apple-system,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 2.5;
+  outline: transparent;
+  padding: 0 1rem;
+  text-align: center;
+  text-decoration: none;
+  transition: box-shadow .2s ease-in-out;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+
+.button-62:not([disabled]):focus {
+  box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5), .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
+}
+
+.button-62:not([disabled]):hover {
+  box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(239, 71, 101, 0.5), .125rem .125rem 1rem rgba(255, 154, 90, 0.5);
+}
+
+.button-51 {
+    width: 200px;
+    height: 50px;
+    font-size: 9px;
+    font-weight: 200;
+    letter-spacing: 1px;
+    padding: 13px 20px 13px;
+    outline: 0;
+    border: 1px solid black;
+    cursor: pointer;
+    position: relative;
+    background-color: rgba(0, 0, 0, 0);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+  
+  .button-51:after {
+    content: "";
+    background-color: #098911;
+    width: 100%;
+    z-index: -1;
+    position: absolute;
+    height: 100%;
+    top: 7px;
+    left: 7px;
+    transition: 0.2s;
+  }
+  
+  .button-51:hover:after {
+    top: 0px;
+    left: 0px;
+    color: #fff
+  }
+  
+  @media (min-width: 768px) {
+    .button-52 {
+      padding: 13px 50px 13px;
+    }
+  }

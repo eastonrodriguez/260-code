@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <h1>Create Account</h1>
+    <link rel="stylesheet" href="styles.css">
+</head>
 <body>
-      <header>
-        <h1>Create Account</h1>
-      </header>
       <main>
         <form>
-            <label>Username:</label>
+            <label class= "lab-text" >Username:</label>
             <input><br>
-            <label>Password:</label>
+            <label class= "lab-text">Password:</label>
             <input><br>
-            <label>Confirm Password:</label>
+            <label class= "lab-text">Confirm Password:</label>
             <input><br>
             <p>Password must be a minimum of 8 characters with at least 1 lowercase letter, uppercase letter, number, and special character such as !@#$%</p>
             <p>Your Password does not match</p>
-            <button onclick="location.href='login.html'" type="submit">Sign Up</button>
+            <button class="button-62" type="button" onclick="window.location.href='login.html'">Sign Up</button>
         </form>
       </main> 
 </body>
