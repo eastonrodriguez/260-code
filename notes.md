@@ -1,0 +1,3 @@
+* When I started this project I felt like I had a basic understanding of html which was conferting since I,m just worried about this right now and not things like javascript yet which I'm completly clueless on 
+* I'm wondering how much I should plan ahead with this part of the project because there are so many things that I want to do but don't know how yet and I'm dreading having to redo some of this stuff later on
+* its interesting how you can do the seemingly same task in different ways like moving to different pages with onclick="location.href='sort.html'" or just src= not everything obvious
