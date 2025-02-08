@@ -13,14 +13,25 @@ h1 {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    text-align: center;
-}
-img {
-    max-width: 100%;
-    height: auto;
 }
 p {
-    color: white
+    color: #098911
+}
+.button-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+}
+.info-box {
+    max-width: 600px; 
+    margin: 20px auto; 
+    padding: 20px;
+    border: 2px solid #098911; 
+    border-radius: 10px; 
+    background-color: #222; 
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
   
 h2 {
@@ -41,9 +52,13 @@ div {
 }
 
 .lab-text {
-    color: white
+    color: #098911
 }
-
+.title {
+    background-color: #222;
+    padding: 20px;
+    text-align: center;
+}
 .button-52 {
   width: 200px;
   height: 50px;
@@ -173,5 +188,15 @@ div {
     .button-52, .button-51 {
         width: 100%;
         max-width: 300px;
+    }
+}
+@media (max-width: 600px) {
+    .info-box {
+        width: 90%;
+        padding: 15px;
+    }
+    iframe {
+        width: 100%; 
+        height: auto;
     }
 }
