@@ -1,0 +1,5 @@
+# Animal Quiz
+## Elevator Pitch
+This project will be a short quiz that showcases 10 animals that most people are not familiar with and ask them to guess the animal's real name. After the user pushes the button a box will appear that will tell them the correct anwser, funfacts, videos or voice recordings of the animal, and links to more info. The user will also see how many other users got that answer right and after they finish the quiz they will see what percentile they are compared to everyone else and have the oppertunuity to do it again or log out.
+## HTML
+I have 4 html pages. the main one "index.html" has the title in the head and and in the body we have all ten photos and 4 buttons related to those buttons and a box of info below with videos and links. In the footer we have a seperate info box that will tell you your percentile as well as the two buttons that will let you log out or retry.    
