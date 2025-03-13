@@ -9,6 +9,15 @@ h1 {
     text-align: center;
     font-size: 2rem; 
 }
+.question-image {
+  margin: 60px;
+}
+.question-section {
+  display: flex;
+  align-items: center;
+  gap: 20px; 
+  margin-bottom: 30px; 
+}
 .container {
     display: flex;
     flex-wrap: wrap;
@@ -199,4 +208,35 @@ div {
         width: 100%; 
         height: auto;
     }
+}
+.infobox {
+  display: none;
+  max-width: 600px; 
+    margin: 20px auto; 
+    padding: 20px;
+    border: 2px solid #098911; 
+    border-radius: 10px; 
+    background-color: #222; 
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.infobox.visible {
+  display: block;
+  max-width: 600px; 
+    margin: 20px auto; 
+    padding: 20px;
+    border: 2px solid #098911; 
+    border-radius: 10px; 
+    background-color: #222; 
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.button-51:active:after {
+  background-color: rgb(17, 66, 17);
+}
+
+.button-52:active:after {
+  background-color: rgb(185, 3, 3);
 }

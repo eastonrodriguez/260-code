@@ -1,0 +1,25 @@
+{
+    "name": "npmtest",
+    "version": "1.0.0",
+    "description": "Simple Node.js demo",
+    "main": "index.js",
+    "license": "MIT",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview"
+    },
+    "dependencies": {
+        "bootstrap": "^5.3.3",
+        "give-me-a-joke": "^0.5.1",
+        "react": "^19.0.0",
+        "react-bootstrap": "^2.10.9",
+        "react-dom": "^19.0.0",
+        "react-router-dom": "^7.3.0"
+    },
+    "keywords": [],
+    "author": "",
+    "devDependencies": {
+        "vite": "^6.2.0"
+    }
+}
