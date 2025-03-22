@@ -20,6 +20,7 @@ export function Quiz() {
   const [incorrectCount, setIncorrectCount] = useState(0);
   const [quizKey, setQuizKey] = useState(0);
   const nav = useNavigate();
+  const [percentile, setPercentile] = useState(null);
 
 
 
@@ -34,7 +35,7 @@ useEffect(() => {
 
 
 
-const handleButtonClick = (questionKey, buttonType) => {
+const handleButtonClick = async (questionKey, buttonType) => {
   if (answeredQuestions[questionKey]) return; 
   const storedClicks = JSON.parse(localStorage.getItem("buttonClicks")) || { button51: 0, button52: 0 };
   storedClicks[buttonType] += 1;
@@ -55,7 +56,29 @@ const handleButtonClick = (questionKey, buttonType) => {
 };
 
 
-const resetQuiz = () => {
+const resetQuiz = async () => {
+  const storedClicks = JSON.parse(localStorage.getItem("buttonClicks")) || { button51: 0, button52: 0 };
+    const totalAttempts = Object.values(answeredQuestions).filter(Boolean).length;
+    if (totalAttempts > 0) {
+        try {
+            const response = await fetch("/api/nope", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    correctCount: storedClicks.button51,
+                    totalAttempts: totalAttempts
+                })
+            });
+            const data = await response.json();
+            if (data.percentile !== undefined) {
+                setPercentile(data.percentile); 
+            }
+        } catch (error) {
+            console.error("Error saving score:", error);
+        }
+    }
+  };
+  const localReact= () => {
   localStorage.setItem("buttonClicks", JSON.stringify({ button51: 0, button52: 0 }));
         setCorrectCount(0);
         setIncorrectCount(0);
@@ -84,12 +107,12 @@ const totalAttempts = Object.values(answeredQuestions).filter(Boolean).length;
         <main>
           <section className="container">
           <div className="question-section">
-            <img className="question-image" width="560" height="315" src="/photo/Monkey.jpeg" alt="Monkey" />
+            <img className="question-image" width="560" height="315" src="/Monkey.jpeg" alt="Monkey" />
             <div className="button-grid">
-              <button className="button-52" type="button" onClick={() => handleButtonClick("q1", "button52")}>Blue Tibetan Macaque</button>
-              <button className="button-52" type="button" onClick={() => handleButtonClick("q1", "button52")}>Na’vi Marmoset</button>
-              <button className="button-51" type="button" onClick={() => handleButtonClick("q1", "button51")}>Golden Snub Nosed Monkey</button>
-              <button className="button-52" type="button" onClick={() => handleButtonClick("q1", "button52")}>Nepali Sacred Langur</button>
+              <button className="button-52" type="button" onClick={() => {handleButtonClick("q1", "button52");resetQuiz()}}>Blue Tibetan Macaque</button>
+              <button className="button-52" type="button" onClick={() => {handleButtonClick("q1", "button52");resetQuiz()}}>Na’vi Marmoset</button>
+              <button className="button-51" type="button" onClick={() => {handleButtonClick("q1", "button51");resetQuiz()}}>Golden Snub Nosed Monkey</button>
+              <button className="button-52" type="button" onClick={() => {handleButtonClick("q1", "button52");resetQuiz()}}>Nepali Sacred Langur</button>
             </div>
             </div>
             <h2>After the person pushes any button a box will apear below them that will say what the correct answer is and what percent of people got the answer right. After that there will be a short bio about the animal along with a video or voice recording about it and a link to its wiki page as seen below</h2>
@@ -103,12 +126,12 @@ const totalAttempts = Object.values(answeredQuestions).filter(Boolean).length;
            </section>
            <section className="container">
            <div className="question-section">
-      <img className="question-image" width="560" height="315" src="/photo/Armadillo.jpeg" alt="Armadillo"/>
+      <img className="question-image" width="560" height="315" src="/Armadillo.jpeg" alt="Armadillo"/>
       <div className="button-grid">
-        <button className="button-52" type="button" onClick={() => handleButtonClick("q2", "button52")}>Tailless Pink Pangolin</button>
-        <button className="button-52" type="button" onClick={() => handleButtonClick("q2", "button52")}>Pichi</button>
-        <button className="button-52" type="button" onClick={() => handleButtonClick("q2", "button52")}>Strawberry Sandshrew</button>
-        <button className="button-51" type="button" onClick={() => handleButtonClick("q2", "button51")}>Pink Fairy Armadillo</button>
+        <button className="button-52" type="button" onClick={() => {handleButtonClick("q2", "button52");resetQuiz()}}>Tailless Pink Pangolin</button>
+        <button className="button-52" type="button" onClick={() => {handleButtonClick("q2", "button52");resetQuiz()}}>Pichi</button>
+        <button className="button-52" type="button" onClick={() => {handleButtonClick("q2", "button52");resetQuiz()}}>Strawberry Sandshrew</button>
+        <button className="button-51" type="button" onClick={() => {handleButtonClick("q2", "button51");resetQuiz()}}>Pink Fairy Armadillo</button>
       </div>
       </div>
       {showInfo2 && (
@@ -121,12 +144,12 @@ const totalAttempts = Object.values(answeredQuestions).filter(Boolean).length;
     </section>
     <section className="container">
     <div className="question-section">
-        <img className="question-image" width="560" height="315" src="/photo/Echidna.jpg" alt="Echidna"/>
+        <img className="question-image" width="560" height="315" src="/Echidna.jpg" alt="Echidna"/>
         <div className="button-grid">
-          <button className="button-52" type="button" onClick={() => handleButtonClick("q3", "button52")}>Tropical Long-Nosed Hedgehog</button>
-          <button className="button-51" type="button" onClick={() => handleButtonClick("q3", "button51")}>Eastern Long Beaked Echidna</button>
-          <button className="button-52" type="button" onClick={() => handleButtonClick("q3", "button52")}>Spiked Ecuadorian Anteater</button>
-          <button className="button-52" type="button" onClick={() => handleButtonClick("q3", "button52")}>Snuffleupagus</button>
+          <button className="button-52" type="button" onClick={() => {handleButtonClick("q3", "button52");resetQuiz()}}>Tropical Long-Nosed Hedgehog</button>
+          <button className="button-51" type="button" onClick={() => {handleButtonClick("q3", "button51");resetQuiz()}}>Eastern Long Beaked Echidna</button>
+          <button className="button-52" type="button" onClick={() => {handleButtonClick("q3", "button52");resetQuiz()}}>Spiked Ecuadorian Anteater</button>
+          <button className="button-52" type="button" onClick={() => {handleButtonClick("q3", "button52");resetQuiz()}}>Snuffleupagus</button>
         </div>
         </div>
         {showInfo3 && (
@@ -139,30 +162,30 @@ const totalAttempts = Object.values(answeredQuestions).filter(Boolean).length;
     </section>
     <section className="container">
     <div className="question-section">
-      <img className="question-image" width="560" height="315" src="/photo/Bat.jpg" alt="Bat"/>
+      <img className="question-image" width="560" height="315" src="/Bat.jpg" alt="Bat"/>
       <div className="button-grid">
-        <button className="button-52" type="button" onClick={() => handleButtonClick("q4", "button52")}>Cockroach Bat</button>
-        <button className="button-52" type="button" onClick={() => handleButtonClick("q4", "button52")}>Giant Congolese Fruit Bat</button>
-        <button className="button-51" type="button" onClick={() => handleButtonClick("q4", "button51")}>Hammer-Headed Bat</button>
-        <button className="button-52" type="button" onClick={() => handleButtonClick("q4", "button52")}>Bibundi Bat</button>
+        <button className="button-52" type="button" onClick={() => {handleButtonClick("q4", "button52");resetQuiz()}}>Cockroach Bat</button>
+        <button className="button-52" type="button" onClick={() => {handleButtonClick("q4", "button52");resetQuiz()}}>Giant Congolese Fruit Bat</button>
+        <button className="button-51" type="button" onClick={() => {handleButtonClick("q4", "button51");resetQuiz()}}>Hammer-Headed Bat</button>
+        <button className="button-52" type="button" onClick={() => {handleButtonClick("q4", "button52");resetQuiz()}}>Bibundi Bat</button>
       </div>
       </div>
       {showInfo4 && (
       <div className="info-box">
         <div>The correct answer's Hammer-Headed Bat! <span id="percentile4"></span>% got this answer right</div>
         <div><span className="slanted">Hypsignathus monstrosus</span> are very common bats found all across Western and Central Africa. They are one of the largest bat species in the world with a wingspan of about 1 meter in length. Their diet consists entirely of fruit and unlike insect eating bats their face irregularities have nothing to do with echolocation. Only the males have these peculiar facial features and they are used to create a mating call to attract females. You can here the call below and <a href="https://en.wikipedia.org/wiki/Hammer-headed_bat">Learn more here!</a></div>
-        <audio controls> <source src="Brigham Young University 2.m4a" type="audio/mp4"></source></audio>
+        <audio controls> <source src="/Brigham Young University 2.m4a" type="audio/mp4"></source></audio>
       </div>
       )}
     </section>
     <section className="container">
     <div className="question-section">
-        <img className="question-image" width="560" height="315" src="/photo/Coendou.jpg" alt="Porcupine"/>
+        <img className="question-image" width="560" height="315" src="/Coendou.jpg" alt="Porcupine"/>
         <div className="button-grid">
-          <button className="button-51" type="button" onClick={() => handleButtonClick("q5", "button51")}>Coendous</button>
-          <button className="button-52" type="button" onClick={() => handleButtonClick("q5", "button52")}>Malayan Hystrix</button>
-          <button className="button-52" type="button" onClick={() => handleButtonClick("q5", "button52")}>Quilled 4 Toed Sloth</button>
-          <button className="button-52" type="button" onClick={() => handleButtonClick("q5", "button52")}>Pig-Nosed Porcupine</button>
+          <button className="button-51" type="button" onClick={() => {handleButtonClick("q5", "button51");resetQuiz()}}>Coendous</button>
+          <button className="button-52" type="button" onClick={() => {handleButtonClick("q5", "button52");resetQuiz()}}>Malayan Hystrix</button>
+          <button className="button-52" type="button" onClick={() => {handleButtonClick("q5", "button52");resetQuiz()}}>Quilled 4 Toed Sloth</button>
+          <button className="button-52" type="button" onClick={() => {handleButtonClick("q5", "button52");resetQuiz()}}>Pig-Nosed Porcupine</button>
         </div>
         </div>
         {showInfo5 && (
@@ -175,12 +198,12 @@ const totalAttempts = Object.values(answeredQuestions).filter(Boolean).length;
     </section>
     <section className="container">
     <div className="question-section">
-        <img className="question-image" width="560" height="315" src="/photo/Deer.jpg" alt="Deer"/>
+        <img className="question-image" width="560" height="315" src="/Deer.jpg" alt="Deer"/>
         <div className="button-grid">
-          <button className="button-51" type="button" onClick={() => handleButtonClick("q6", "button51")}>Tufted Deer</button>
-          <button className="button-52" type="button" onClick={() => handleButtonClick("q6", "button52")}>Cambodian Muntjac</button>
-          <button className="button-52" type="button" onClick={() => handleButtonClick("q6", "button52")}>Vampire Puku</button>
-          <button className="button-52" type="button" onClick={() => handleButtonClick("q6", "button52")}>Fanged Dwarf Brocket</button>
+          <button className="button-51" type="button" onClick={() => {handleButtonClick("q6", "button51");resetQuiz()}}>Tufted Deer</button>
+          <button className="button-52" type="button" onClick={() => {handleButtonClick("q6", "button52");resetQuiz()}}>Cambodian Muntjac</button>
+          <button className="button-52" type="button" onClick={() => {handleButtonClick("q6", "button52");resetQuiz()}}>Vampire Puku</button>
+          <button className="button-52" type="button" onClick={() => {handleButtonClick("q6", "button52");resetQuiz()}}>Fanged Dwarf Brocket</button>
         </div>
         </div>
         {showInfo6 && (
@@ -193,12 +216,12 @@ const totalAttempts = Object.values(answeredQuestions).filter(Boolean).length;
     </section>
     <section className="container">
     <div className="question-section">
-      <img className="question-image" width="560" height="315" src="/photo/Cat.jpeg" alt="Cat"/>
+      <img className="question-image" width="560" height="315" src="/Cat.jpeg" alt="Cat"/>
       <div className="button-grid">
-        <button className="button-52" type="button" onClick={() => handleButtonClick("q7", "button52")}>Zadjda</button>
-        <button className="button-51" type="button" onClick={() => handleButtonClick("q7", "button51")}>Manul</button>
-        <button className="button-52" type="button" onClick={() => handleButtonClick("q7", "button52")}>Waffles McCuddlefluff</button>
-        <button className="button-52" type="button" onClick={() => handleButtonClick("q7", "button52")}>Shilüüs</button>
+        <button className="button-52" type="button" onClick={() => {handleButtonClick("q7", "button52");resetQuiz()}}>Zadjda</button>
+        <button className="button-51" type="button" onClick={() => {handleButtonClick("q7", "button51");resetQuiz()}}>Manul</button>
+        <button className="button-52" type="button" onClick={() => {handleButtonClick("q7", "button52");resetQuiz()}}>Waffles McCuddlefluff</button>
+        <button className="button-52" type="button" onClick={() => {handleButtonClick("q7", "button52");resetQuiz()}}>Shilüüs</button>
       </div>
       </div>
       {showInfo7 && (
@@ -211,12 +234,12 @@ const totalAttempts = Object.values(answeredQuestions).filter(Boolean).length;
     </section>
     <section className="container">
     <div className="question-section">
-        <img className="question-image" width="560" height="315" src="/photo/Tenrec.webp" alt="Tenrec"/>
+        <img className="question-image" width="560" height="315" src="/Tenrec.webp" alt="Tenrec"/>
         <div className="button-grid">
-          <button className="button-52" type="button" onClick={() => handleButtonClick("q8", "button52")}>Pygmy Lemon Lemur</button>
-          <button className="button-52" type="button" onClick={() => handleButtonClick("q8", "button52")}>Spiked Bumblebee Civet</button>
-          <button className="button-52" type="button" onClick={() => handleButtonClick("q8", "button52")}>Punk-Rock Porcupine</button>
-          <button className="button-51" type="button" onClick={() => handleButtonClick("q8", "button51")}>Lowland Streaked Tenrec</button>
+          <button className="button-52" type="button" onClick={() => {handleButtonClick("q8", "button52");resetQuiz()}}>Pygmy Lemon Lemur</button>
+          <button className="button-52" type="button" onClick={() => {handleButtonClick("q8", "button52");resetQuiz()}}>Spiked Bumblebee Civet</button>
+          <button className="button-52" type="button" onClick={() => {handleButtonClick("q8", "button52");resetQuiz()}}>Punk-Rock Porcupine</button>
+          <button className="button-51" type="button" onClick={() => {handleButtonClick("q8", "button51");resetQuiz()}}>Lowland Streaked Tenrec</button>
         </div>
         </div>
         {showInfo8 && (
@@ -229,12 +252,12 @@ const totalAttempts = Object.values(answeredQuestions).filter(Boolean).length;
     </section>
     <section className="container">
     <div className="question-section">
-        <img className="question-image" width="560" height="315" src="/photo/Quoll.webp" alt="Quoll"/>
+        <img className="question-image" width="560" height="315" src="/Quoll.webp" alt="Quoll"/>
         <div className="button-grid">
-          <button className="button-52" type="button" onClick={() => handleButtonClick("q9", "button52")}>Tasmanian Angel</button>
-          <button className="button-52" type="button" onClick={() => handleButtonClick("q9", "button52")}>White-Speckled Ground Squirrel</button>
-          <button className="button-51" type="button" onClick={() => handleButtonClick("q9", "button51")}>Eastern Quoll</button>
-          <button className="button-52" type="button" onClick={() => handleButtonClick("q9", "button52")}>Pīwakawaka</button>
+          <button className="button-52" type="button" onClick={() => {handleButtonClick("q9", "button52"); resetQuiz()}}>Tasmanian Angel</button>
+          <button className="button-52" type="button" onClick={() => {handleButtonClick("q9", "button52");resetQuiz()}}>White-Speckled Ground Squirrel</button>
+          <button className="button-51" type="button" onClick={() => {handleButtonClick("q9", "button51");resetQuiz()}}>Eastern Quoll</button>
+          <button className="button-52" type="button" onClick={() => {handleButtonClick("q9", "button52");resetQuiz()}}>Pīwakawaka</button>
         </div>
         </div>
         {showInfo9 && (
@@ -247,12 +270,12 @@ const totalAttempts = Object.values(answeredQuestions).filter(Boolean).length;
     </section>
     <section className="container">
     <div className="question-section">
-        <img className="question-image" width="560" height="315" src="/photo/Binturong.jpg" alt="CatBear"/>
+        <img className="question-image" width="560" height="315" src="/Binturong.jpg" alt="CatBear"/>
         <div className="button-grid">
-          <button className="button-51" type="button" onClick={() => handleButtonClick("q10", "button51")}>Binturong</button>
-          <button className="button-52" type="button" onClick={() => handleButtonClick("q10", "button52")}>Indonesian Cat-Bear</button>
-          <button className="button-52" type="button" onClick={() => handleButtonClick("q10", "button52")}>Hla Khaing</button>
-          <button className="button-52" type="button" onClick={() => handleButtonClick("q10", "button52")}>Raharjo</button>
+          <button className="button-51" type="button" onClick={() => {handleButtonClick("q10", "button51");resetQuiz()}}>Binturong</button>
+          <button className="button-52" type="button" onClick={() => {handleButtonClick("q10", "button52");resetQuiz()}}>Indonesian Cat-Bear</button>
+          <button className="button-52" type="button" onClick={() => {handleButtonClick("q10", "button52");resetQuiz()}}>Hla Khaing</button>
+          <button className="button-52" type="button" onClick={() => {handleButtonClick("q10", "button52");resetQuiz()}}>Raharjo</button>
         </div>
         </div>
         {showInfo10 && (
@@ -273,9 +296,9 @@ const totalAttempts = Object.values(answeredQuestions).filter(Boolean).length;
         well you did compared to other people. Then you will be able to either sign out or try again.
       </h2>
       <div className="info-box">
-        <div>Good job! You got {correctCount} out of {totalAttempts}, which makes you in the % percentile!</div>
+        <div>Good job! You got {correctCount} out of {totalAttempts}, {percentile !== null ? ` which makes you in the ${percentile}% percentile!` : " calculating percentile..."}</div>
         <NavLink to="/nope">
-          <button className="button-62" type="button" onClick={resetQuiz}>
+          <button className="button-62" type="button" onClick={localReact}>
             Retry
           </button>
         </NavLink>

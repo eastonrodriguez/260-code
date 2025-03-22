@@ -18,11 +18,11 @@ export function Create() {
             return;
         }
         if (!isPasswordValid(password)) {
-            setMessage("Password must have at least 8 characters, 1 uppercase, 1 lowercase, 1 number, and 1 special character.");
+            setMessage("Password does not fit cradentials");
             return;
         }
         try {
-            const response = await fetch("http://localhost:4000/register", {
+            const response = await fetch("/api/setup", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, password }),
@@ -30,6 +30,7 @@ export function Create() {
             const data = await response.json();
             setMessage(data.msg);
             if (response.ok) {
+                setMessage("Username and password were set up successfully!");
                 setTimeout(() => navigate("/login"), 2000);
             }
         } catch (error) {
@@ -40,7 +41,6 @@ export function Create() {
         <div>
             <header className="title">
                 <h1>Create Account</h1>
-                <link rel="stylesheet" href="styles.css" />
             </header>
             <main>
                 <form onSubmit={handleSubmit}>
@@ -56,9 +56,11 @@ export function Create() {
                     <div>
                         <p>Password must be a minimum of 8 characters with at least 1 lowercase letter, uppercase letter, number, and special character such as !@#$%</p>
                     </div>
-                    {message && <div className="info-box">
-                        <p>Your Password does not match</p>
-                    </div>}
+                    {message && <div className="info-box"><p>{message}</p></div>}
+                    {password !== confirmPassword && confirmPassword.length > 0 && (
+                    <div className="info-box">
+                    <p>Passwords do not match!</p></div>
+                    )}
                     <button className="button-62" type="submit">Sign Up</button>
                 </form>
                 <NavLink to="/login">

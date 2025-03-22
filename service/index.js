@@ -10,24 +10,33 @@ const uuid = require("uuid");
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
 let users = [];
+const scores = [];
 
-
-app.post("/setup", async (req, res) => {
-  const { username, password } = req.body;
-
-  if (users.find((user) => user.username === username)) {
-    return res.status(400).json({ msg: "User already exists" });
+function isPasswordValid(password) {
+    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password);
   }
 
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const user = { id: uuid.v4(), username, password: hashedPassword };
-  users.push(user);
+app.post("/api/setup", async (req, res) => {
+    const { username, password } = req.body;
 
-  res.json({ msg: "User registered successfully" });
-});
+    if (users.find((user) => user.username === username)) {
+      return res.status(400).json({ msg: "User already exists" });
+    }
+  
+    if (!isPasswordValid(password)) {
+      return res.status(400).json({ msg: "Password must have at least 8 characters, 1 uppercase, 1 lowercase, 1 number, and 1 special character." });
+    }
+  
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = { id: uuid.v4(), username, password: hashedPassword };
+    users.push(user);
+  
+    res.json({ msg: "User registered successfully" });
+  });
 
 
-app.post("/login", async (req, res) => {
+
+app.post("/api/login", async (req, res) => {
   const { username, password } = req.body;
   const user = users.find((user) => user.username === username);
 
@@ -37,6 +46,20 @@ app.post("/login", async (req, res) => {
 
   res.cookie("userId", user.id, { httpOnly: true });
   res.json({ msg: "Login successful" });
+});
+
+
+app.post("/api/nope", (req, res) => {
+    const { correctCount, totalAttempts } = req.body;
+    console.log(correctCount,totalAttempts)
+    if (totalAttempts === 0) {
+        return res.status(400).json({ msg: "No questions answered" });
+    }
+    scores.push({ correctCount, totalAttempts });
+    const totalUsers = scores.length;
+    const betterScores = scores.filter(score => score.correctCount < correctCount).length;
+    const percentile = ((betterScores / totalUsers) * 100).toFixed(2);
+    res.json({ percentile });
 });
 
 app.listen(port, () => {
