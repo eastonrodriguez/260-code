@@ -17,7 +17,12 @@ export function Quiz() {
   const [showInfo9, setShowInfo9] = useState(false);
   const [showInfo10, setShowInfo10] = useState(false);
   const [correctCount, setCorrectCount] = useState(0);
+  const [shareMessage, setShareMessage] = useState("");
+  const [liveScores, setLiveScores] = useState([]);
   const [incorrectCount, setIncorrectCount] = useState(0);
+  const [socket, setSocket] = useState(null);
+  const [sharedMessage, setSharedMessage] = useState(null);
+  const [showShareMessage, setShowShareMessage] = useState(false);
   const [quizKey, setQuizKey] = useState(0);
   const nav = useNavigate();
   const [percentile, setPercentile] = useState(null);
@@ -32,25 +37,6 @@ useEffect(() => {
     setCorrectCount(storedClicks.button51);
     setIncorrectCount(storedClicks.button52);
 }, [quizKey]);
-
-useEffect(() => {
-  const socket = new WebSocket("ws://localhost:4000");
-
-  socket.onmessage = (event) => {
-    try {
-      const data = JSON.parse(event.data);
-      if (data.type === "update") {
-        setLiveScores(data.scores);
-      }
-    } catch (error) {
-      console.error("Error parsing WebSocket message:", error);
-    }
-  };
-
-  return () => {
-    socket.close();
-  };
-}, []);
 
 const handleButtonClick = async (questionKey, buttonType) => {
   if (answeredQuestions[questionKey]) return; 
@@ -114,7 +100,39 @@ const resetQuiz = async () => {
 };
 
 const totalAttempts = Object.values(answeredQuestions).filter(Boolean).length;
+useEffect(() => {
+  const newSocket = new WebSocket("ws://localhost:4000");
+  setSocket(newSocket);
 
+  newSocket.onmessage = (event) => {
+    try {
+      const data = JSON.parse(event.data);
+      if (data.type === "sharedScore") {
+        setSharedMessage(data.score);
+        setTimeout(() => setSharedMessage(null), 7000);  
+      }
+    } catch (error) {
+      console.error("Error parsing WebSocket message:", error);
+    }
+  };
+
+  return () => newSocket.close(); 
+}, []);
+const shareScore = () => {
+  const message = `I scored ${correctCount} out of ${totalAttempts} in the Weird Zoo Quiz! ${
+    percentile !== null ? `I'm in the top ${percentile}%!` : ""
+  } Can you beat my score? #WeirdZooQuiz`;
+
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(message)
+      .then(() => alert("Score copied to clipboard! Share it with your friends."))
+      .catch(err => console.error("Failed to copy:", err));
+  }
+
+  if (socket && socket.readyState === WebSocket.OPEN) {
+    socket.send(JSON.stringify({ type: "sharedScore", score: message }));
+  }
+};
     return (
         <div>
           <header className="title">
@@ -304,7 +322,7 @@ const totalAttempts = Object.values(answeredQuestions).filter(Boolean).length;
         )}
     </section>
     </main>
-    <footer className="container">
+<footer className="container">
       <h2>
         <a href="https://github.com/eastonrodriguez/260-code.git">GitHub Link</a>
       </h2>
@@ -314,12 +332,21 @@ const totalAttempts = Object.values(answeredQuestions).filter(Boolean).length;
       </h2>
       <div className="info-box">
         <div>Good job! You got {correctCount} out of {totalAttempts}, {percentile !== null ? ` which makes you in the ${percentile}% percentile!` : " calculating percentile..."}</div>
+        {sharedMessage && (
+      <div className="shared-score">
+        <strong>{sharedMessage}</strong>
+      </div>
+    )}
+
+    <button className="button-62" type="button" onClick={shareScore}>
+      Share Score
+    </button>
         <NavLink to="/nope">
           <button className="button-62" type="button" onClick={localReact}>
             Retry
           </button>
         </NavLink>
-        
+       
             <button className="button-62" type="button" onClick={()=>nav('/')}>
               Logout
             </button>
