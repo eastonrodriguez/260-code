@@ -33,7 +33,24 @@ useEffect(() => {
     setIncorrectCount(storedClicks.button52);
 }, [quizKey]);
 
+useEffect(() => {
+  const socket = new WebSocket("ws://localhost:4000");
 
+  socket.onmessage = (event) => {
+    try {
+      const data = JSON.parse(event.data);
+      if (data.type === "update") {
+        setLiveScores(data.scores);
+      }
+    } catch (error) {
+      console.error("Error parsing WebSocket message:", error);
+    }
+  };
+
+  return () => {
+    socket.close();
+  };
+}, []);
 
 const handleButtonClick = async (questionKey, buttonType) => {
   if (answeredQuestions[questionKey]) return; 
