@@ -28,6 +28,9 @@ function App() {
             {isHome && (
                 <header className="title">
                     <h1>{pageTitle}</h1>
+                    <h2>
+                        <a href="https://github.com/eastonrodriguez/260-code.git">GitHub Link</a>
+                    </h2>
                 </header>
             )}
             <main>

@@ -41,6 +41,9 @@ export function Create() {
         <div>
             <header className="title">
                 <h1>Create Account</h1>
+                <h2>
+                    <a href="https://github.com/eastonrodriguez/260-code.git">GitHub Link</a>
+                </h2>
             </header>
             <main>
                 <form onSubmit={handleSubmit}>
