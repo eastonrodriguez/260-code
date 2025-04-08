@@ -70,3 +70,6 @@ export function Login() {
     </div>
   );
 }
+<h2>
+  <a href="https://github.com/eastonrodriguez/260-code.git">GitHub Link</a>
+</h2>
